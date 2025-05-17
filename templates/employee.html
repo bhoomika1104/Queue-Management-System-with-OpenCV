@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h2>Employee Dashboard</h2>
+    <h3>Queue Management</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Token Number</th>
+                <th>Customer Name</th>
+                <th>Counter</th>
+                <th>Batch</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.token }}</td>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.counter }}</td>
+                    <td>{{ customer.batch }}</td>
+                    <td>
+                        <select id="status_{{ customer.token }}">
+                            <option value="In Process" {% if customer.status == "In Process" %}selected{% endif %}>In Process</option>
+                            <option value="Completed" {% if customer.status == "Completed" %}selected{% endif %}>Completed</option>
+                            <option value="Not Completed" {% if customer.status == "Not Completed" %}selected{% endif %}>Not Completed</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button onclick="updateStatus({{ customer.token }})">Update Status</button>
+                        <button onclick="deleteCustomer({{ customer.token }})">Delete</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function updateStatus(token) {
+            var status = document.getElementById('status_' + token).value;
+            fetch(`/update_status/${token}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({status: status}),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        }
+
+        function deleteCustomer(token) {
+            fetch(`/delete_customer/${token}`, {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        }
+    </script>
+</body>
+</html>

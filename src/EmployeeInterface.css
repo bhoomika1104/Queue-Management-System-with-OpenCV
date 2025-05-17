@@ -1,0 +1,78 @@
+.employee-interface {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .employee-interface h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  table th,
+  table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+  }
+  
+  table th {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  button {
+    padding: 5px 10px;
+    margin: 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-completed {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .btn-pending {
+    background-color: #ffc107;
+    color: black;
+  }
+  
+  .btn-waiting {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .no-data {
+    text-align: center;
+    color: #666;
+  }
+  

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Human Detection</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Real-Time Human Detection</h1>
+    <video id="webcam" width="640" height="480" autoplay></video>
+    <div id="result">
+        <h2>People Detected: <span id="people-count">0</span></h2>
+    </div>
+
+    <script>
+        // Access the webcam
+        const video = document.getElementById('webcam');
+        const peopleCountDisplay = document.getElementById('people-count');
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                video.srcObject = stream;
+            })
+            .catch(function(err) {
+                console.error("Error accessing webcam: " + err);
+            });
+
+        // Capture the video frame every 3 seconds and send to the server
+        setInterval(function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 640;
+            canvas.height = 480;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const imageData = canvas.toDataURL('image/png');
+
+            // Send captured image to Flask backend for processing
+            $.ajax({
+                url: '/capture_image',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ image: imageData }),
+                success: function(response) {
+                    // Update the people count based on the response
+                    peopleCountDisplay.innerText = response.people_detected;
+                },
+                error: function(error) {
+                    console.error("Error detecting people: ", error);
+                }
+            });
+        }, 3000);  // Send every 3 seconds
+    </script>
+</body>
+</html>
